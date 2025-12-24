@@ -7,6 +7,6 @@ export const jyotishStore = writable<{
     error: string | null;
 }>({
     consultantList: null,
-    loading: false,
+    loading: true,
     error: null
 });

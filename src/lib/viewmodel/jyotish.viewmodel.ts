@@ -19,7 +19,7 @@ export class JyotishViewModel {
             };
 
             const res = await this.consultantService.getAllConsultants(request);
-            jyotishStore.update(s => ({ ...s,consultantList:res.items, loading: true, error: null }));
+            jyotishStore.update(s => ({ ...s,consultantList:res.items, loading: false, error: null }));
         } catch (error) {
             mealStore.set({
                 data: null,
