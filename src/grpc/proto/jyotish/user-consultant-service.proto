@@ -1,0 +1,79 @@
+syntax = 'proto3';
+
+package com.hamro.jyotish;
+option java_multiple_files = true;
+option java_package = "com.hamro.jyotish.api.proto";
+option java_outer_classname = "JyotishConsultantServiceProto";
+option objc_class_prefix = "JCSM";
+option go_package = "services/jyotish";
+
+import "jyotish-common.proto";
+
+service UserConsultantService {
+
+  rpc GetConsultantById(GetByIdRequest) returns (Consultant);
+  rpc GetAllConsultant(GetAllConsultantRequest) returns (GetAllConsultantResponse);
+  rpc GetLegacyAllConsultant(Empty) returns (GetAllConsultantResponse);
+  rpc GetAllOnlineConsultant(GetAllOnlineConsultantRequest) returns (GetAllOnlineConsultantResponse);
+  rpc SearchConsultant(SearchConsultantRequest) returns (SearchConsultantResponse);
+}
+
+message SearchConsultantRequest{
+  string sku = 1;
+}
+
+message SearchConsultantResponse{
+  string next = 1;
+  repeated ConsultantResponse items = 2;
+}
+
+message ConsultantResponse {
+  Consultant consultant_response = 1;
+  TimedPresenceStatus timed_presence_status = 2;
+
+  message TimedPresenceStatus {
+    PresenceStatus presence_status = 1;
+    int64 timestamp = 2;
+  }
+}
+
+message GetAllOnlineConsultantResponse {
+  repeated ConsultantStatus list = 1;
+  string productSKU = 2;
+  string next_page_cursor = 3;
+  //new
+  repeated OnlineConsultant consultants = 4;
+
+  message ConsultantStatus{
+    Consultant consultant = 1;
+    PresenceStatus presence = 2;
+    int64 no_of_reviews = 3;
+  }
+}
+
+message GetAllOnlineConsultantRequest{
+  string user_id = 1;
+  string productSKU = 2;
+  string next_page_token = 3;
+  int32 limit = 4;
+}
+
+message OnlineConsultant {
+  string id = 1;
+  string name = 2;
+  string image = 3;
+  string bio = 4;
+  int64 rating_count = 5;
+  Rating rating = 6;
+  string intro = 7;
+  PresenceStatus presence_status = 8;
+  string title = 9;
+  int64 total_call_duration = 10;
+  double average_rating = 11;
+  int64 joining_since = 12;
+  int32 years_of_experience = 13;
+  string profile_banner = 14;
+  string video = 15;
+  string thumbnail_url = 16;
+  string aspect_ratio = 17;
+}

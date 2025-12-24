@@ -1,0 +1,872 @@
+syntax = 'proto3';
+
+package com.hamro.jyotish;
+option java_multiple_files = true;
+option java_package = "com.hamro.jyotish.api.proto";
+option java_outer_classname = "JyotishCommonProto";
+option objc_class_prefix = "JCM";
+option go_package = "services/jyotish";
+
+message MarketProduct {
+  string id = 1;
+  string name = 2;
+  repeated ProductNature product_nature = 3;
+  string description = 4;
+  string image = 5;
+  string commission = 6;
+  string estimated_duration = 7;
+  ProductJyotish jyotish = 8;
+  PriceInfo price_info = 9;
+  ProductCategory product_category = 10;
+  repeated string product_requirements = 11;
+  map<string, PriceInfo> sku_price_info_map = 12;
+  repeated AvailablePaymentMethod availablePaymentMethod = 13;
+}
+
+message ProductJyotish {
+  string id = 1;
+  string name = 2;
+  string image = 3;
+  string description = 4;
+}
+
+message PriceInfo {
+  string country_code = 1;
+  double actual_price = 2;
+  double discounted_price = 3;
+  Currency currency = 4;
+  int64 offer_end_date = 5;
+  string offer_message = 6;
+  double discount_percentage = 7;
+  repeated PaymentMethod available_payment_methods = 8;
+  double conversionRate = 9;
+  string sku = 10;
+}
+
+message ProductCategory {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string image = 4;
+}
+
+message Order {
+  string id = 1;
+  string product_id = 2;
+  EverestUser end_user = 3;
+  string reference_id = 4;
+  double final_price = 5;
+  Currency currency = 6;
+  PaymentStatus payment_status = 7;
+  string metadata = 8;
+  string sku = 9;
+  string charge_id = 10;
+  int64 created_date = 11;
+  int64 updated_date = 12;
+
+  enum PaymentStatus{
+    SIGNED = 0;
+    INITIATED = 1;
+    IN_PROGRESS = 2;
+    COMPLETED = 3;
+    CANCELED = 4;
+    FAILED = 5;
+  }
+}
+
+message PaginationInfoRequest {
+  int32 limit = 1;
+  string cursor = 2;
+}
+
+message GetByIdRequest {
+  string key = 1;
+  string sku = 2;
+}
+
+message Consultant {
+  string id = 1;
+  string everest_id = 2;
+  string name = 3;
+  string image = 4;
+  string email = 5;
+  string slug = 6;
+  string time_zone = 7;
+  bool featured = 8;
+  int32 starting_year = 9;
+  string address = 10;
+  string intro = 11;
+  string bio = 12;
+  Location location = 13;
+  int32 review_count = 14;
+  bool email_confirmed = 15;
+  double average_rating = 16;
+  repeated Language language = 17;
+  string cover_image = 18;
+  int32 total_call_duration = 19;
+  string available_timing = 20;
+  int32 priority = 21;
+  string video = 22;
+  repeated AssociatedProduct associated_products = 23;
+  int32 years_of_experience = 24;
+  Rating rating = 25;
+  string profileBanner = 26;
+  string key = 27;
+  string title = 28;
+  Gender gender = 29;
+  bool unpublish = 30;
+  string thumbnail_url = 31;
+  string aspect_ratio = 32;
+}
+
+enum Gender {
+  UNSPECIFIED = 0;
+  MALE = 1;
+  FEMALE = 2;
+  OTHER = 3;
+}
+
+message Rating{
+  double average_rating = 1;
+}
+
+message AssociatedProduct {
+  string product_id = 1;
+  string name = 2;
+}
+
+message EverestUser {
+  string user_id = 1;
+  string display_name = 2;
+  string about = 3;
+  string photo_url = 4;
+  string cover_photo_url = 5;
+  string email = 6;
+  bool verified = 7;
+  string user_name = 8;
+  string user_email = 9;
+  map<string, string> metadata = 10;
+  bool suspended = 11;
+  bool admin = 12;
+  repeated BusinessAccountInfo business_account_info_list = 13;
+  string phone_number = 14;
+}
+
+message Location {
+  string country = 1;
+  string abbr = 2;
+  string place = 3;
+  double lat = 4;
+  double lng = 5;
+}
+
+message BusinessAccountInfo {
+  string id = 1;
+  string name = 2;
+  string logo = 3;
+  bool verified = 4;
+  Role role = 5;
+}
+
+message Ticket{
+  int64 id = 1;
+  TicketOrder order = 2;
+  EverestUser end_user = 3;
+  string sku = 4;
+  TicketConsultant consultant = 5;
+  CouponDto coupon_code = 6;
+  CouponDto associated_code = 7;
+  Status status = 8;
+  int64 used_timestamp = 9;
+  int64 complete_timestamp = 10;
+  string city = 11;
+  string meeting_id = 12;
+  string meeting_token = 13;
+  string join_code = 14;
+  string country = 15;
+  string campaign_id = 16;
+  bool has_chat_group = 17;
+  string review_key = 18;
+  PayableType type = 19;
+  int64 created_date = 20;
+  int64 updated_date = 21;
+  repeated ConsultantHistory consultant_histories = 22;
+  PaymentMethod payment_method = 23;
+  InstrumentType payment_instrument_type = 24;
+  int64 purchasedTimeStamp = 25;
+  string payable_key = 26;
+  ProductType product_type = 27;
+  string key = 28;
+  UserPrescription user_prescription = 29;
+  int64 refunded_or_canceled_date = 30;
+  string refunded_or_canceled_by = 31;
+  string refunded_or_canceled_reason = 32;
+
+  message TicketConsultant {
+    string id = 1;
+    string key = 2;
+    string name = 3;
+    string email = 4;
+    string image = 5;
+    string title = 6;
+    Gender gender = 7;
+    int64 no_of_reviews = 8;
+    int64 total_call_duration = 9;
+    double average_rating = 10;
+    int32 joining_since = 11;
+    string bio = 12;
+    Rating rating = 13;
+  }
+
+  message CouponCode{
+    int64 id = 1;
+    string code = 2;
+    Coupon coupon = 3;
+    string consultant_key = 4;
+    Status status = 5;
+    int32 no_of_times_used = 6;
+    string sku = 7;
+    bool provided_to_user = 8;
+  }
+
+  message TicketOrder {
+    string key = 1;
+    int64 id = 2;
+    string sku = 3;
+    string charge_id = 4;
+    string product_id = 5;
+    double finalPrice = 6;
+    Currency currency = 7;
+    EverestUser user = 8;
+    CouponDto applied_coupon = 9;
+    OrderLocation location = 10;
+    int64 created_at = 11;
+    PaymentMethod payment_method = 12;
+    int64 created_date = 13;
+    int64 updated_date = 14;
+    string status = 15;
+    bool deleted = 16;
+  }
+
+  message OrderLocation {
+    string city = 1;
+    string country = 2;
+    string country_code = 3;
+  }
+}
+
+message CouponDto {
+  int64 id = 1;
+  string sku = 2;
+  string code = 3;
+  int32 no_of_times_used = 4;
+  bool provided_to_user = 5;
+  string coupon_id = 6;
+  int64 created_date = 7;
+  int64 updated_date = 8;
+  string status = 9;
+}
+
+message ConsultantHistory {
+  string key = 1;
+  string name = 2;
+  string slug = 3;
+  int64 update_time_stamp = 4;
+}
+
+message PaymentRequest {
+  string reference_id = 1;
+  string user_id = 2;
+  string client_id = 3;
+  string success_url = 4;
+  string failure_url = 5;
+  string delivery_charge = 6;
+  string service_name = 7;
+  int32 clientVersion = 8;
+  map<string, string> metadata = 9;
+  string service_charge = 10;
+}
+
+message LegacyProduct{
+  string sku = 1;
+  string banner_image = 2;
+  string ticket_image = 3;
+  string steps_image = 4;
+  Product product = 5;
+  string country_code = 6;
+  double list_price = 7;
+  double final_price = 8;
+  Currency currency = 9;
+}
+
+message Product {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  string available_ticket_msg = 4;
+  map<string, PriceInfo> sku_price_info_map = 5;
+  PriceInfo price_info = 6;
+  ProductType product_type = 7;
+  bool deleted = 8;
+  string banner_image = 9;
+  string ticket_image = 10;
+  string steps_image = 11;
+  Label label = 12;
+  EarningCut earning_cut = 13;
+  string main_notice_msg = 14;
+  string sub_notice_msg = 15;
+  string rule_msg = 16;
+  string after_call_msg = 17;
+}
+
+message EarningCut {
+  double vat = 1;
+  double hamropatro_cut = 2;
+}
+
+message AvailablePaymentMethod {
+  string id = 1;
+  string name = 2;
+  PaymentMethod method = 3;
+  string image_url = 4;
+  bool has_callback = 5;
+}
+
+message Label {
+  string name = 1;
+  string icon = 2;
+  string link = 3;
+}
+
+message ProductSalesContent {
+  string title = 1;
+  string text = 2;
+  Type type = 3;
+  repeated Item items = 4;
+}
+
+message Item {
+  string photo_url = 1;
+  string title = 2;
+  string subtitle = 3;
+  string text = 4;
+}
+
+message ProductSales {
+  string heading = 1;
+  repeated ProductSalesContent product_sales_content = 2;
+}
+
+message Coupon {
+  optional string id = 1;
+  string product_id = 2;
+  string group_id = 3;
+  DiscountType type = 4;
+  string sku = 5;
+  string generated_by = 6;
+  string coupon_code = 7;
+  int64 expiry_date = 8;
+  double discount_price = 9;
+  double discount_percentage = 10;
+  bool for_association = 11;
+  int32 limit = 12;
+  string remarks = 13;
+  AssignedType assigned_type = 14;
+  string assigned_user_id = 15;
+  string assigned_user_email = 16;
+  Status status = 17;
+  int32 no_of_times_used = 18;
+  int32 quantity = 19;
+  int32 remaining = 20;
+  CouponIdentifier coupon_identifier = 21;
+
+  message CouponIdentifier {
+    string key = 1;
+    ApplyFor apply_for = 2;
+    IdentifierType identifier_type = 3;
+
+    enum IdentifierType {
+      GROUP = 0;
+      PARTNER = 1;
+      ALL = 2;
+      CONSULTANT = 3;
+    }
+  }
+
+  enum ApplyFor {
+    INDIVIDUAL = 0;
+    ALL = 1;
+  }
+
+  enum DiscountType {
+    PERCENT_DISCOUNT = 0;
+    PERCENT_DISCOUNT_MULTIPLE = 1;
+    FREE = 2;
+    FREE_MULTIPLE = 3;
+    FIXED_VALUE = 4;
+    UNDEFINED = 5;
+  }
+}
+
+message UserReview {
+  string review_id = 1;
+  string user_name = 2;
+  string user_id = 3;
+  string image = 4;
+  repeated UserReviewHistory review_history = 5;
+  string consultant_key = 6;
+  string consultant_name = 7;
+  string product_id = 8;
+  string review = 9;
+  int32 rate = 10;
+  repeated Tags tags = 11;
+  int64 user_edited_date = 12;
+  bool deleted = 13;
+  string ticket_id = 14;
+  string consultant_image = 15;
+  bool published = 16;
+  string consultant_email = 17;
+  string user_email = 18;
+
+  enum Tags {
+    FEATURED = 0;
+  }
+}
+
+message Prescription {
+  string id = 1;
+  string title = 2;
+  repeated PrescriptionOption prescription_options = 3;
+}
+
+message PrescriptionOption {
+  string title = 1;
+  string description = 2;
+}
+
+message GetAllPrescriptionsRequest {
+  string cursor = 1;
+  int32 limit = 2;
+}
+
+message GetAllPrescriptionsResponse {
+  repeated Prescription prescription = 1;
+  string cursor = 2;
+}
+
+message UserReviewHistory {
+  string review = 1;
+  int64 updated_date = 2;
+}
+
+message GetReviewRequest {
+  string review_key = 1;
+  string consultant_key = 2;
+  int64 product_id = 3;
+  string product_key = 4;
+}
+
+message GetAllReviewResponse {
+  repeated UserReviewResponse items = 1;
+  string next = 2;
+
+  message UserReviewResponse{
+    string user_name = 1;
+    string image = 2;
+    bool edited = 3;
+    string review = 4;
+    int32 rate = 5;
+    int64 created_date = 6;
+    int64 updated_date = 7;
+    int64 user_edited_date = 8;
+    string review_key = 9;
+    bool unpublished = 10;
+    string consultant_key = 11;
+    string product_id = 12;
+    repeated Tags user_review_tags = 13;
+    string consultant_name = 14;
+    string consultant_email = 15;
+    string user_email = 16;
+    string ticket_id = 17;
+
+    enum Tags {
+      FEATURED = 0;
+    }
+  }
+}
+
+message DeleteReviewRequest {
+  string key = 1;
+  string consultant_key = 2;
+  int64 product_id = 3;
+}
+
+message DeleteReviewResponse {
+  bool deleted = 1;
+}
+
+message GetAllConsultantRequest {
+  string next_page_token = 1;
+  int32 limit = 2;
+  string sku = 3;
+}
+
+message GetAllConsultantResponse {
+  string next = 1;
+  repeated AllConsultantResponse items = 2;
+}
+
+message AllConsultantResponse{
+  Consultant consultant = 1;
+  repeated Product products = 2;
+}
+
+message GetAllTicketsResponse {
+  string next = 1;
+  repeated Ticket items = 2;
+}
+
+message UserPrescription {
+  string ticket_id = 1;
+  PrescriptionProvidingJyotish prescription_providing_jyotish = 2;
+  string other_prescription = 3;
+  repeated Prescription prescription = 4;
+  string created_date = 5;
+  UserKundali user_kundali = 6;
+
+  message  UserKundali {
+    string id = 1;
+    string user_id = 2;
+    string name = 3;
+    string kundali_type = 4;
+    Kundali janma_kundali = 5;
+    Kundali kundali_female = 6;
+    Kundali kundali_male = 7;
+    double total_obtainedPts = 8;
+    string total_obtainedPct = 9;
+    string created_nepali_date = 10;
+    repeated Kmd kmd_list = 11;
+    string image = 12;
+  }
+}
+
+message PrescriptionProvidingJyotish {
+  string id = 1;
+  string name = 2;
+  string image = 3;
+  string title = 4;
+}
+
+message UserPrescriptionRequest {
+  string ticket_id = 1;
+  string other_prescription = 2;
+  repeated Prescription prescription = 3;
+  PrescriptionProvidingJyotish jyotish = 4;
+}
+
+message CouponValidationRequestWrapper {
+  CouponValidationRequest coupon_validate_request = 1;
+}
+
+message CouponValidationRequest {
+  string sku = 1;
+  string code = 2;
+  //new
+  string product_id = 3;
+}
+
+message CouponValidationResponse {
+  string code = 1;
+  double original_price = 2;
+  double percent_discount = 3;
+  double discounted_price = 4;
+  double final_price = 5;
+  Currency currency = 6;
+  Coupon.DiscountType type = 7;
+}
+
+message Empty {}
+
+enum ProductCategoryEnum {
+  NORMAL_PUJA = 0;
+  GANESH_PUJA = 1;
+  LAKSHMI_PUJA = 2;
+  SHIVA_PUJA = 3;
+  DURGA_PUJA = 4;
+  SARASWATI_PUJA = 5;
+  HANUMAN_PUJA = 6;
+  SATYANARAYAN_PUJA = 7;
+  NAVAGRAHA_PUJA = 8;
+  KALI_PUJA = 9;
+  VASTU_PUJA = 10;
+}
+
+enum AssignedType {
+  PUBLIC = 0;
+  INDIVIDUAL = 1;
+  TICKET = 2;
+}
+
+enum Status {
+  CREATED = 0;
+  ASSIGNED = 1;
+  USED = 2;
+  CLOSED = 3;
+  CANCELED = 4;
+  REFUNDED = 5;
+}
+
+enum Language {
+  NEPALI = 0;
+  ENGLISH = 1;
+  HINDI = 2;
+}
+
+enum Currency {
+  USD = 0;
+  AUD = 1;
+  CNY = 2;
+  INR = 3;
+  JPY = 4;
+  NPR = 5;
+  QAR = 6;
+  EUR = 7;
+  KRW = 8;
+  SAR = 9;
+  AED = 10;
+  GBP = 11;
+  CAD = 12;
+  KWD = 13;
+}
+
+enum Type {
+  STEP = 0;
+  POINTS = 1;
+  PARAGRAPH = 2;
+  TESTIMONIAL = 3;
+}
+
+enum ProductType {
+  CALL = 0;
+  CHAT = 1;
+  MARKET = 2;
+}
+
+enum InstrumentType {
+  PAY_PAGE = 0;
+  UPI_INTENT = 1;
+}
+
+enum PayableType {
+  APPOINTMENT = 0;
+  CONSULTANT = 1;
+  GROUP = 2;
+  PARTNER = 3;
+  PRODUCT_VARIANT = 4;
+  PRODUCT = 5;
+}
+
+enum Role {
+  ADMIN = 0;
+  PARTICIPANT = 1;
+}
+
+enum OrderStatus {
+  FAILED = 0;
+  COMPLETED = 1;
+}
+
+
+enum PaymentMethod {
+  UNDEFINED = 0;
+  HAMRO_PAY = 1;
+  ESEWA = 2;
+  KHALTI = 3;
+  CONNECT_IPS = 4;
+  CYBER_SOURCE = 5;
+  STRIPE = 6;
+  PAYPAL = 7;
+  PHONE_PE = 8;
+  STRIPE_WEB = 10;
+  STRIPE_ANDROID = 11;
+  STRIPE_IOS = 12;
+  STRIPE_IOS_CARD = 13;
+  PAYPAL_WEB = 14;
+  PAYPAL_ANDROID = 15;
+  KHALTI_WEB = 16;
+  KHALTI_E_PAY = 17;
+  ESEWA_WEB = 18;
+  ESEWA_ANDROID = 19;
+  ESEWA_IOS = 20;
+  G_IN_APP = 21;
+  A_IN_APP = 22;
+  CONNECT_IPS_WEB = 23;
+  CYBERSOURCE_WEB = 24;
+  HAMRO_PAY_WEB = 25;
+  FREE_COUPON = 26;
+}
+
+enum ProductNature {
+  RECORDED = 0;
+  LIVE = 1;
+  PHYSICAL = 2;
+}
+
+enum PresenceStatus {
+  OFFLINE = 0;
+  ONLINE = 1;
+  BUSY = 2;
+  UNKNOWN = 3;
+}
+
+message GetAllFilteredTicketsRequest {
+  string sku = 1;
+  string status = 2;
+  string payment_method = 3;
+  string consultant_name = 4;
+  string consultant_id = 5;
+  string user_id = 6;
+  string user_name = 7;
+  string user_email = 8;
+  string consultant_email = 9;
+  int64 purchased_date = 10;
+  string ticket_id = 11;
+  string cursor = 12;
+  int32 limit = 13;
+  int64 completed_from = 14;
+  int64 completed_to = 15;
+  string product_type = 16;
+  string refunded_by = 17;
+}
+
+message updateTicketStatusRequest {
+  string ticket_id = 1;
+  string consultant_id = 2;
+}
+
+enum Tags {
+  FEATURED = 0;
+}
+
+message ResendMailVerificationLinkRequest {
+  string consultantId = 1;
+}
+
+message ResendMailVerificationLinkResponse{
+  string message = 1;
+}
+
+enum EarningSource {
+  CONSULTATION = 0;
+  DAKSHINA = 1;
+}
+
+message GetTicketByIdRequest {
+  string ticket_id = 1;
+}
+
+message CallLog {
+  string meeting_id = 1;
+  string user_name = 2;
+  string consultant_name = 3;
+  string ticket_id = 4;
+  int64 start_time = 5;
+  int64 end_time = 6;
+  repeated MeetingStatus meeting_status_history = 7;
+  MeetingStatus current_meeting_status = 8;
+  repeated ParticipantAttendance participant_attendance = 9;
+  string product = 10;
+  MeetingType meeting_type = 11;
+  string user_agent = 12;
+  map<string, string> rtc_data = 13;
+  map<string, string> metadata = 14;
+  string sku = 15;
+
+  enum MeetingStatus {
+    CREATED = 0;
+    ONGOING = 1;
+    DECLINED = 2;
+    ENDED = 3;
+    MISSED = 4;
+    FAILED = 5;
+  }
+
+  enum MeetingType {
+    LIVE_KIT = 0;
+    WEBRTC = 1;
+  }
+
+  message ParticipantAttendance {
+    string status = 1;
+    string participant_id = 2;
+    string participant_name = 3;
+  }
+}
+
+message Kundali {
+  string kundali_key = 1;
+  repeated double bhogamshas = 2;
+  repeated int32 lagnas = 3;
+  repeated int32 navamshas = 4;
+  int32 rashi = 5;
+  int32 nakshyatra = 6;
+  int32 pada = 7;
+  string letter = 8;
+  string tithi = 9;
+  string vimshottari = 10;
+  string yogani = 11;
+  string trivagi = 12;
+  map<string, StringList> vimshottari_dates = 13;
+  map<string, StringList> yogani_dates = 14;
+  map<string, StringList> trivagi_dates = 15;
+  bool success = 16;
+  string error_message = 17;
+  string kundali_name = 18;
+  string relation = 19;
+  int64 created_date = 20;
+  DOB dob = 21;
+  POB pob = 22;
+  BirthTime birth_time = 23;
+  string image = 24;
+  Gender gender = 25;
+  bool am = 26;
+  int32 anayamsha = 27;
+  bool daylightSavingTime = 28;
+  int32 daylightSavingValue = 29;
+  int32 timezone = 30;
+  bool location_outside = 31;
+  int64 updated_date = 32;
+}
+
+message DOB {
+  int32 date_ad = 1;
+  int32 date_bs = 2;
+  int32 month_ad = 3;
+  int32 month_bs = 4;
+  int32 year_ad = 5;
+  int32 year_bs = 6;
+}
+
+message POB {
+  string latitude = 1;
+  string longitude = 2;
+  string address = 3;
+}
+
+message BirthTime {
+  string hour = 1;
+  string minute = 2;
+  string period = 3;
+}
+
+message StringList {
+  repeated string values = 1;
+}
+
+message Kmd {
+  string guna_detail = 1;
+  string guna_name = 2;
+  string obtained_pct = 3;
+  string obtained_pts = 4;
+  string total_pts = 5;
+}

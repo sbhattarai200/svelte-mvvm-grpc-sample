@@ -1,0 +1,2 @@
+genJyotishProto:
+	protoc -I=src/gRPC/proto/jyotish --plugin=node_modules/.bin/protoc-gen-ts --experimental_allow_proto3_optional --ts_opt=optimize_code_size --ts_opt long_type_string --ts_out=src/gRPC/generated-stubs/jyotish src/gRPC/proto/jyotish/*.proto
