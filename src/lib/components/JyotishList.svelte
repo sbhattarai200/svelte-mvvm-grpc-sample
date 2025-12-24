@@ -20,7 +20,7 @@
 </script>
 
 <div>
-    {JSON.stringify($jyotishStore.consultantList)}
+    {$jyotishStore.loading?"loading...":JSON.stringify($jyotishStore.consultantList)}
 </div>
 
 <style>
